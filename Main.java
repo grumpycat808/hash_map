@@ -1,14 +1,47 @@
 package hashTable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println(wordPattern("abba", "dog cat cat dog"));
+		int[] testData = new int[]{1,0,1,1};
+		System.out.println(containsNearbyDuplicate(testData, 1));
 	}
+	
+	public static boolean containsNearbyDuplicate(int[] nums, int k) {
+		
+		Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
+		for (int i = 0; i < nums.length; i++) {
+			if(map.containsKey(nums[i])) {
+				ArrayList<Integer> list = map.get(nums[i]);
+				list.add(i);
+				map.put(nums[i], list);
+			} else {
+				
+				ArrayList<Integer> list = new ArrayList<Integer>();
+				list.add(i);
+				map.put(nums[i], list);
+			}
+		}
+		
+		for (Map.Entry<Integer, ArrayList<Integer>> entry : map.entrySet()) {
+			
+			ArrayList<Integer> val = entry.getValue();
+			
+			for (int i = 0; i < val.size() - 1; i++) {
+				if(val.get(i + 1) - val.get(i) <= k) {
+					return true;
+				}
+			}
+		}
+		return false;
+        
+    }
 	
 	public static boolean isIsomorphic(String s, String t) {
 		if(s.length() != t.length()) return false;
